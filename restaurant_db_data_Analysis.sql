@@ -1,3 +1,86 @@
+Use restaurant_db;
+-- OBJECTIVE ONE Explore the menu items table
+
+-- 1. View the menu_items table. 
+select * from menu_items
+
+-- 2. Find the number of items on the menu.
+
+select Count(*) from menu_items;
+
+-- 3. What are least and the most expensive items on the menu?
+select * from menu_items
+order by price;
+
+select * from menu_items
+order by price desc;
+
+
+-- 4. How many Italian dishes on the menu?
+
+select count(*) from menu_items
+where category = "Italian";
+
+-- 5. What are the least and most expensive Italian dishes on the menu?
+
+select * from menu_items
+where category = "Italian"
+order by price;
+
+select * from menu_items
+where category = "Italian"
+order by price desc;
+
+-- 6. How many dishes are in each category?
+
+select category , count(item_name) AS num_dishes from menu_items
+group by category;
+
+
+-- 7. What is the average dish price within each category?
+select category , avg(price) As avg_price from menu_items
+group by category;
+
+-- OBJECTIVE TWO Explore the orders table 
+
+-- 1. View the order_details table.
+select * from order_details;
+-- 2. What is the table's date range?
+select * from order_details
+order by order_date;
+
+select min(order_date)
+from order_details;
+
+select max(order_date)
+from order_details;
+
+select min(order_date), max(order_date) from order_details;
+
+-- 3. How many orders were made within this date range?
+
+select count(distinct order_id) from order_details;
+
+-- 4. How many items  were odered  within this date range?
+
+select count(*) from order_details;
+
+-- 5. Which order had the most number of items?
+
+select order_id, count(item_id) AS num_items 
+from order_details
+ group by order_id 
+ order by num_items desc;
+
+-- 6. How many orders had more than 12 items?
+select count(*) from
+(select order_id, count(item_id) AS num_items 
+from order_details
+ group by order_id 
+ having num_items > 12) as num_orders ;     -- we using having clause to filter on over aggregations
+
+
+
 -- OBJECTIVE THREE ANALYZE CUSTOMER BEHAVIOR
 
 -- 1. Combine the menu_items and order_details tables into a single table.
